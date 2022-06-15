@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='kubernetes, master'><title>kubernetes 集群由单 master 集群升级至多 master 集群</title>
+
+<link rel='canonical' href='https://whaeon.github.io/p/kubernetes-blog09/'>
+
+<link rel="stylesheet" href="/scss/style.min.ac77dcf8b111b51da39a92990f431923f210f3876d85798a2125667f96dc33a4.css"><meta property='og:title' content='kubernetes 集群由单 master 集群升级至多 master 集群'>
+<meta property='og:description' content='kubernetes, master'>
+<meta property='og:url' content='https://whaeon.github.io/p/kubernetes-blog09/'>
+<meta property='og:site_name' content='Whaeon&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='kubernetes' /><meta property='article:published_time' content='2022-06-15T16:48:31&#43;08:00'/><meta property='article:modified_time' content='2022-06-15T16:48:31&#43;08:00'/>
+<meta name="twitter:title" content="kubernetes 集群由单 master 集群升级至多 master 集群">
+<meta name="twitter:description" content="kubernetes, master">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu2a55d0dc9561dbecaba0e01d6e049248_120948_300x0_resize_q75_box.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Whaeon&#39;s Blog</a></h1>
+            <h2 class="site-description">亿万泥污人,亿万场冷暖.</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/whaeon'
+                        target="_blank"
+                        title="GitHub"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/kubernetes-blog09/">kubernetes 集群由单 master 集群升级至多 master 集群</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            kubernetes, master
+        </h3>
+        
+    </div>
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jun 15, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    3 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="k8s-集群架构升级">k8s 集群架构升级</h2>
+<h3 id="环境准备">环境准备</h3>
+<ul>
+<li>至少三台用作 master 的主机</li>
+<li>master 节点和 worker 节点全网络连接（公网或私网）</li>
+<li>已配置完成的 keepalived 环境（用于多 master 集群的负载均衡）</li>
+</ul>
+<blockquote>
+<p><strong>特别注意：</strong>：搭建环境中 kubeadm,kubectl,kubelet 以及 kubernetes cluster version 均为 1.21.2。由于版本在命令上可能有所区别，因此，参考时需注意。</p>
+</blockquote>
+<h3 id="操作过程概述">操作过程概述</h3>
+<ul>
+<li>整个集群的升级过程：
+<ul>
+<li>配置 configmap kubeadm-config (该 configmap 存放在 kube-system namespace 中)</li>
+<li>重新配置 cluster 中各组件服务的配置文件中对应的 apiserver ip/domain</li>
+<li>上传集群证书，并获取节点访问证书的秘钥</li>
+<li>获取加入集群节点的 token</li>
+<li>other controlPlane 作为 master 加入集群，同时同步 etcd 的数据。</li>
+</ul>
+</li>
+</ul>
+<h4 id="配置-kubeadm-config">配置 kubeadm-config</h4>
+<ul>
+<li>在 configmap kubeadm-config  中添加 controlPlaneEndpoint 参数</li>
+<li>配置 certSANs（配置该参数的目的是为了重新初始化包含负载均衡ip的 apiserver 的证书和秘钥）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看是否有 kubeadm-config 这个 configmap 存在</span>
+</span></span><span class="line"><span class="cl">kubectl get configmap -n kube-system
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">kubectl edit cm kubeadm-config -n kube-system -o yaml
+</span></span><span class="line"><span class="cl"><span class="c1"># 添加 controlPlaneEndpoint 参数</span>
+</span></span><span class="line"><span class="cl">apiVersion: v1
+</span></span><span class="line"><span class="cl">data:
+</span></span><span class="line"><span class="cl">  ClusterConfiguration: <span class="p">|</span>
+</span></span><span class="line"><span class="cl">    apiServer:
+</span></span><span class="line"><span class="cl">      certSANs:
+</span></span><span class="line"><span class="cl">      <span class="c1"># 添加 certSANs，添加 load_balance_ip/master_node_ip/worker_node_ip/domains。</span>
+</span></span><span class="line"><span class="cl">      - ip/domain
+</span></span><span class="line"><span class="cl">      - ip/domain
+</span></span><span class="line"><span class="cl">      extraArgs:
+</span></span><span class="line"><span class="cl">        authorization-mode: Node,RBAC
+</span></span><span class="line"><span class="cl">      timeoutForControlPlane: 4m0s
+</span></span><span class="line"><span class="cl">    apiVersion: kubeadm.k8s.io/v1beta2
+</span></span><span class="line"><span class="cl">    controlPlaneEndpoint: ip:port
+</span></span><span class="line"><span class="cl">    <span class="c1"># 添加 load balance ip:port</span>
+</span></span><span class="line"><span class="cl">    ...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>将修改后的 configmap 导出，同时使用该文件生成新的 apiserver key、cert</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ kubectl -n kube-system get configmap kubeadm-config -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.ClusterConfiguration}&#39;</span> &gt; kubeadm.yaml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>移动旧的 apiserver 证书，并生成新的 apiserver key</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ sudo mv /etc/kubernetes/pki/apiserver.<span class="o">{</span>crt,key<span class="o">}</span> ~
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除或移动至其他目录，否则 kubeadm 检测到文件存在，则不会创建新的 cert key</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ sudo kubeadm init phase certs apiserver --config kubeadm.yaml
+</span></span><span class="line"><span class="cl"><span class="c1"># 该命令会生成 apiserver.{crt,key} 两个文件。</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>重新启动 apiserver container，重新加载 集群配置
+container 被 kill 后，集群会重新启动一个 apiserver</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ docker ps <span class="p">|</span> grep apiserver
+</span></span><span class="line"><span class="cl">$ docker <span class="nb">kill</span>  container_id/container_name
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="验证证书">验证证书</h4>
+<p>验证证书是否存在已添加的 certSANs 列表</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ openssl x509 -in /etc/kubernetes/pki/apiserver.crt -text
+</span></span><span class="line"><span class="cl"><span class="c1"># 输出内容中可以看到包含 certSANs 中写入的 ip 地址列表</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="配置新的-ipdomain">配置新的 IP/Domain</h4>
+<ul>
+<li>修改各组件服务对应的 apiserver ip address</li>
+<li>修改的文件包含以下几个部分
+<ul>
+<li>kubelet.conf</li>
+<li>scheduler.conf</li>
+<li>controller-manager.conf</li>
+<li>.kube/config</li>
+<li>cluster-info(in kube-public namespce)</li>
+<li>kube-proxy(in kube-system namespace)</li>
+</ul>
+</li>
+<li>修改并重新启动对应 container</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ sudo sed -i <span class="s1">&#39;s/old_apiserver_ip:port/new_load_balance_ip:port/&#39;</span> /etc/kubernetes/kubelet.conf
+</span></span><span class="line"><span class="cl">$ sudo sed -i <span class="s1">&#39;s/old_apiserver_ip:port/new_load_balance_ip:port/&#39;</span> /etc/kubernetes/controller-manager.conf
+</span></span><span class="line"><span class="cl">$ sudo sed -i <span class="s1">&#39;s/old_apiserver_ip:port/new_load_balance_ip:port/&#39;</span> /etc/kubernetes/scheduler.conf
+</span></span><span class="line"><span class="cl">$ sudo sed -i <span class="s1">&#39;s/old_apiserver_ip:port/new_load_balance_ip:port/&#39;</span> ~/.kube/config
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 修改包含旧 apiserver ip 的两个 configmap</span>
+</span></span><span class="line"><span class="cl">$ kubectl edit cm cluster-info -n kube-public
+</span></span><span class="line"><span class="cl">$ kubectl edit cm kube-proxy -n kube-systen
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>重新启动 container，验证相关服务
+重新启动 container，以替换 container 中使用的 server ip</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ docker ps
+</span></span><span class="line"><span class="cl">$ docker <span class="nb">kill</span> controller-manager_container_id scheduler_container_id
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ sudo systemctl restart kubelet
+</span></span><span class="line"><span class="cl"><span class="c1"># 重启 kubelet 服务，更新 server ip</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>验证 cluster-info 是否更新</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ kubectl cluster-info
+</span></span><span class="line"><span class="cl">    Kubernetes control plane is running at https://192.168.3.230:9443
+</span></span><span class="line"><span class="cl">    CoreDNS is running at https://192.168.3.230:9443/api/v1/namespaces/kube-
+</span></span><span class="line"><span class="cl">    system/services/kube-dns:dns/proxy
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    To further debug and diagnose cluster problems, use <span class="s1">&#39;kubectl cluster-info dump&#39;</span>.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="上传集群证书">上传集群证书</h4>
+<p>上传证书到集群，并获取其他 control Plane 访问集群证书的秘钥</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ sudo kubeadm init phase upload-certs --upload-certs
+</span></span><span class="line"><span class="cl"><span class="c1"># 输出类似以下内容</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>upload-certs<span class="o">]</span> Storing the certificates in Secret <span class="s2">&#34;kubeadm-certs&#34;</span> in the <span class="s2">&#34;kube-system&#34;</span> Namespace
+</span></span><span class="line"><span class="cl"><span class="o">[</span>upload-certs<span class="o">]</span> Using certificate key:
+</span></span><span class="line"><span class="cl">24d6435f37e76458e267f479fac970640b0cbbb07787833e34fb529bdd0288e0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="获取节点加入集群的-token">获取节点加入集群的 token</h4>
+<p>获取节点加入集群的 token，用做其他 control plane 加入集群</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ kubeadm token list
+</span></span><span class="line"><span class="cl"><span class="c1"># 该命令可以查看集群的 token 有哪些</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ kubeadm token create --print-join-command
+</span></span><span class="line"><span class="cl"><span class="c1"># 生成 token(生成的 token 只有 24h 的有效期) 并打印出加入集群节点的命令，输出类似以下内容</span>
+</span></span><span class="line"><span class="cl">$ kubeadm join 192.168.3.230:9443 --token h3gpgk.x4quidbcuc3dxyek --discovery-token-ca-cert-hash sha256:2d1a25b512933cbd24f9b8945ae708b2b24a6e6857a57ff6cb7477e4600946d0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="other-controlplane-作为-master-加入集群">other controlPlane 作为 master 加入集群</h4>
+<ul>
+<li>other controlPlane join cluster</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 结合上面获取到的访问证书秘钥和加入集群的命令使用</span>
+</span></span><span class="line"><span class="cl">$ sudo kubeadm join 192.168.3.230:9443 --token h3gpgk.x4quidbcuc3dxyek --discovery-token-ca-cert-hash sha256:2d1a25b512933cbd24f9b8945ae708b2b24a6e6857a57ff6cb7477e4600946d0 --control-plane --certificate-key 24d6435f37e76458e267f479fac970640b0cbbb07787833e34fb529bdd0288e0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>同步 master 中 etcd 的配置
+由于 control Plane 的3个节点是先后安装的，所以前面两个节点的 etcd 中并不包含其他 etcd 节点的信息。所以需要同步所有控制平面节点的 etcd 集群配置</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ cat /etc/kubernetes/manifests/etcd.yaml
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">- --initial-cluster<span class="o">=</span><span class="nv">master</span><span class="o">=</span>https://ip:2380,master2<span class="o">=</span>https://ip:2380,master3<span class="o">=</span>https://ip:2380
+</span></span><span class="line"><span class="cl">...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="参考">参考</h3>
+<p><a class="link" href="https://blog.scottlowe.org/2019/07/30/adding-a-name-to-kubernetes-api-server-certificate/"  target="_blank" rel="noopener"
+    >Adding a Name to the Kubernetes API Server Certificate</a>
+<a class="link" href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/"  target="_blank" rel="noopener"
+    >Creating Highly Available clusters with kubeadm</a>
+<a class="link" href="https://cloud.tencent.com/developer/article/1697039"  target="_blank" rel="noopener"
+    >如何将单 master 升级为多 master 集群</a></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/kubernetes/">kubernetes</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet'/>
+<div id="waline" class="waline-container"></div>
+<style>
+    .waline-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+        --waline-font-size: var(--article-font-size);
+    }
+    .waline-container .wl-count {
+        color: var(--card-text-color-main);
+    }
+</style><script>
+    
+    Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo","https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/bilibili","https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/qq"],"locale":{"admin":"Admin","placeholder":null},"requiredMeta":["name","email","url"],"serverURL":"https://waline-whaeon.vercel.app/"});
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 Whaeon&#39;s Blog
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.12.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#k8s-集群架构升级">k8s 集群架构升级</a>
+      <ol>
+        <li><a href="#环境准备">环境准备</a></li>
+        <li><a href="#操作过程概述">操作过程概述</a>
+          <ol>
+            <li><a href="#配置-kubeadm-config">配置 kubeadm-config</a></li>
+            <li><a href="#验证证书">验证证书</a></li>
+            <li><a href="#配置新的-ipdomain">配置新的 IP/Domain</a></li>
+            <li><a href="#上传集群证书">上传集群证书</a></li>
+            <li><a href="#获取节点加入集群的-token">获取节点加入集群的 token</a></li>
+            <li><a href="#other-controlplane-作为-master-加入集群">other controlPlane 作为 master 加入集群</a></li>
+          </ol>
+        </li>
+        <li><a href="#参考">参考</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

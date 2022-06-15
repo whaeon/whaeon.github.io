@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>cutefish on Whaeon&#39;s Blog</title>
+        <link>https://whaeon.github.io/tags/cutefish/</link>
+        <description>Recent content in cutefish on Whaeon&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Wed, 15 Jun 2022 15:01:50 +0800</lastBuildDate><atom:link href="https://whaeon.github.io/tags/cutefish/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>cutefish OS 使用小技巧</title>
+        <link>https://whaeon.github.io/p/memo-blog01/</link>
+        <pubDate>Wed, 15 Jun 2022 15:01:50 +0800</pubDate>
+        
+        <guid>https://whaeon.github.io/p/memo-blog01/</guid>
+        <description>&lt;h2 id=&#34;安装微信乱码&#34;&gt;安装微信乱码&lt;/h2&gt;
+&lt;p&gt;cutefish OS 英文版系统使用官方的 store 安装完成微信后，出现乱码问题。&lt;/p&gt;
+&lt;h4 id=&#34;故障分析&#34;&gt;故障分析&lt;/h4&gt;
+&lt;p&gt;网上相关联的资料后，发现是由于 wine 缺少字体导致的。cutefish 中微信安装完成后，字体的默认位置在：&lt;code&gt;~/.cutefish-wine/wechat/drive_c/windows/Fonts&lt;/code&gt;&lt;/p&gt;
+&lt;h4 id=&#34;解决办法&#34;&gt;解决办法&lt;/h4&gt;
+&lt;p&gt;处理方式很简单，下载 微软雅黑 字体，并将字体放到上面的目录下，重启微信即可&lt;/p&gt;
+&lt;h2 id=&#34;终端管理&#34;&gt;终端管理&lt;/h2&gt;
+&lt;p&gt;cutefish OS 默认安装的终端不能使用鼠标中键进行粘贴，这对于习惯使用中键的我来说简直是折磨，于是我很干脆的换成了 &lt;code&gt;yakuake&lt;/code&gt; 终端，下拉式终端，使用体验简直绝了。
+下一步就是安装 zsh，然后进行美化了，使用了常见的 oh-my-zsh 进行配置，然后又加入了 &lt;code&gt;zsh-autosuggestions&lt;/code&gt; 插件。启动插件的方式还是要记录一下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;打开 &lt;code&gt;.zshrc&lt;/code&gt; 配置文件，其路径默认是：&lt;code&gt;~/.zshrc&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;找到 plugins 所在，然后加入 zsh-autosuggestions 插件，配置完成后大概长下面这样&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;...
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;plugins&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=(&lt;/span&gt;git zsh-autosuggestions&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;...
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;重新加载配置文件即可（source ~/.zshrc）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;安装部分第三方软件包图标不显示&#34;&gt;安装部分第三方软件包图标不显示&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;custfish 桌面图标集成到了 &lt;code&gt;/usr/share/icons/hicolor&lt;/code&gt; 目录内，在此目录内的 icon 文件，均可以在配置 Desktop 配置文件内的 Icon 属性时忽略路径以及后缀名。&lt;/li&gt;
+&lt;li&gt;dock 的配置文件路径在 &lt;code&gt;~/.config/cutefishos/dock_pinned.conf&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;解决步骤&#34;&gt;解决步骤&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;拷贝第三方应用程序的 .desktop 文件到 /usr/share/applications/ 目录下&lt;/li&gt;
+&lt;li&gt;拷贝第三方应用程序配置文件中 Icon 属性对应路径下的图标文件到 &lt;code&gt;/usr/share/icons/hicolor&lt;/code&gt; 对应的目录下&lt;/li&gt;
+&lt;li&gt;修改 /usr/share/applications/yourapp.desktop 文件内的 Icon 值为第二步操作的文件名(如：Icon=/path/icon.png 可改为 Icon=icon)&lt;/li&gt;
+&lt;li&gt;打开 launcher &amp;ndash;&amp;gt; 找到对应的第三方应用程序 &amp;ndash;&amp;gt; 右击 &amp;ndash;&amp;gt; 发送到 dock&lt;/li&gt;
+&lt;li&gt;修改 dock 配置文件中对应的第三方应用程序中 Icon 属性值。&lt;/li&gt;
+&lt;li&gt;重启操作系统。&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

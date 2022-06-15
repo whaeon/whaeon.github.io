@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>kubernetes on Whaeon&#39;s Blog</title>
+        <link>https://whaeon.github.io/categories/kubernetes/</link>
+        <description>Recent content in kubernetes on Whaeon&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Wed, 15 Jun 2022 15:25:20 +0800</lastBuildDate><atom:link href="https://whaeon.github.io/categories/kubernetes/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>kubernetes 零散笔记</title>
+        <link>https://whaeon.github.io/p/kubernetes-blog02/</link>
+        <pubDate>Wed, 15 Jun 2022 15:25:20 +0800</pubDate>
+        
+        <guid>https://whaeon.github.io/p/kubernetes-blog02/</guid>
+        <description>&lt;h2 id=&#34;note&#34;&gt;Note&lt;/h2&gt;
+&lt;h3 id=&#34;一&#34;&gt;一&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;k8s 中的 static pod 是通过在pod名字后使用连字符加节点名称的方式来表示的&amp;hellip;&lt;/li&gt;
+&lt;li&gt;static pod 的源文件应存放在在 /etc/kubernetes/manifests/ ， pod 启动后，会自动添加后缀来表示。
+就好像这样： &lt;code&gt;multi-container-playground-cluster1-worker1&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;两&#34;&gt;两&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;容器的 affinity 中，关于 topologykey 的理解：当 topologykey 所标记的值一致时，kubernets 则会认为这些相关的 pods/nodes 属于同一个域中。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;三&#34;&gt;三&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;通过 kubeadm 命令检查集群证书过期时间：&lt;code&gt;kubeadm certs check-expiration | grep apiserver&lt;/code&gt;
+或者通过解码集群证书进行验证：&lt;code&gt;openssh x509 -noout -text -in /etc/kubernetes/pki/apiserver.crt&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;四&#34;&gt;四&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;kubernetes 在节点资源不足时，会优先删除实际使用资源大于 request 中需要的资源的 pod，而那些没有添加 request 定义的 pod 会被默认为资源使用超限。参考：&lt;a class=&#34;link&#34; href=&#34;https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;here&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>kubernetes error: selfLink was empty</title>
+        <link>https://whaeon.github.io/p/kubernetes-blog01/</link>
+        <pubDate>Wed, 15 Jun 2022 15:11:21 +0800</pubDate>
+        
+        <guid>https://whaeon.github.io/p/kubernetes-blog01/</guid>
+        <description>&lt;h2 id=&#34;现象&#34;&gt;现象&lt;/h2&gt;
+&lt;p&gt;在 k8s cluster 创建 pvc 时，遇到了一个坑，pvc 在创建完成后一直处于 pending 状态。在进故障排查时，发现 provisioner 的 container 日志中出现了以下内容：
+&lt;code&gt;unexpected error getting claim reference: selfLink was empty, can&#39;t make reference&lt;/code&gt;
+一番查找后，发现 github 上已有关于该问题的解决方案和相关介绍。
+出现该问题的原因是由于 kubernetes 在 1.20.0 以后的版本中将 selfLink 移除而导致。相关文章可以参考以下链接：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/kubernetes/enhancements/issues/1164&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Deprecate and remove SelfLink &lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;troubleshooting&#34;&gt;Troubleshooting&lt;/h3&gt;
+&lt;p&gt;修改 api-server 的配置文件，默认路径为：&lt;code&gt;/etc/kubernetes/manifests/kube-apiserver.yaml&lt;/code&gt;
+在文件中找到如下内容，并插入&lt;code&gt; - --feature-gates=RemoveSelfLink=false&lt;/code&gt; 参数。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;spec&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;containers&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;command&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- &lt;span class=&#34;l&#34;&gt;kube-apiserver&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;kubelet 会监听 api-server 文件，如果有改动，kubelet 会自动删除当前运行的 api-server 的 pod, 然后重新创建一个新的 api-server pod. 如果有多个 Kubernetes Master 节点，则需要在每一个 Master 节点上都修改该文件，并使各节点上的参数保持一致。
+如果 api-server 自动重启失败，可尝试通过命令&lt;code&gt;kubectl apply -f /etc/kubernetes/manifests/kube-apiserver.yaml&lt;/code&gt;手动启动。&lt;/p&gt;
+&lt;h3 id=&#34;reference&#34;&gt;Reference&lt;/h3&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner/issues/25&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Using Kubernetes v1.20.0, getting &amp;ldquo;unexpected error getting claim reference: selfLink was empty, can&amp;rsquo;t make reference&amp;rdquo;&lt;/a&gt;
+附两个关于什么是 selfLink 的说明，目前仍然不是很理解。
+&lt;a class=&#34;link&#34; href=&#34;https://github.com/kubernetes/kubernetes/issues/26158&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Question: what&amp;rsquo;s the functionality of SelfLink in ObjectMeta?&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;http://kubernetes.kansea.com/docs/api-reference/v1/definitions/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;ObjectMeta&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

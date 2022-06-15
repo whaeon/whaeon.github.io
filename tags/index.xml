@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Tags on Whaeon&#39;s Blog</title>
+        <link>https://whaeon.github.io/tags/</link>
+        <description>Recent content in Tags on Whaeon&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Wed, 15 Jun 2022 17:00:06 +0800</lastBuildDate><atom:link href="https://whaeon.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>cert</title>
+        <link>https://whaeon.github.io/tags/cert/</link>
+        <pubDate>Wed, 15 Jun 2022 17:00:06 +0800</pubDate>
+        
+        <guid>https://whaeon.github.io/tags/cert/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>kubernetes</title>
+        <link>https://whaeon.github.io/tags/kubernetes/</link>
+        <pubDate>Wed, 15 Jun 2022 17:00:06 +0800</pubDate>
+        
+        <guid>https://whaeon.github.io/tags/kubernetes/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>ansible</title>
+        <link>https://whaeon.github.io/tags/ansible/</link>
+        <pubDate>Wed, 15 Jun 2022 16:27:29 +0800</pubDate>
+        
+        <guid>https://whaeon.github.io/tags/ansible/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>helm</title>
+        <link>https://whaeon.github.io/tags/helm/</link>
+        <pubDate>Wed, 15 Jun 2022 16:14:11 +0800</pubDate>
+        
+        <guid>https://whaeon.github.io/tags/helm/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>k3s</title>
+        <link>https://whaeon.github.io/tags/k3s/</link>
+        <pubDate>Wed, 15 Jun 2022 16:14:11 +0800</pubDate>
+        
+        <guid>https://whaeon.github.io/tags/k3s/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>TroubleShooting</title>
+        <link>https://whaeon.github.io/tags/troubleshooting/</link>
+        <pubDate>Wed, 15 Jun 2022 16:14:11 +0800</pubDate>
+        
+        <guid>https://whaeon.github.io/tags/troubleshooting/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>VPN</title>
+        <link>https://whaeon.github.io/tags/vpn/</link>
+        <pubDate>Wed, 15 Jun 2022 16:06:19 +0800</pubDate>
+        
+        <guid>https://whaeon.github.io/tags/vpn/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>linux</title>
+        <link>https://whaeon.github.io/tags/linux/</link>
+        <pubDate>Wed, 15 Jun 2022 16:03:09 +0800</pubDate>
+        
+        <guid>https://whaeon.github.io/tags/linux/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>openwrt</title>
+        <link>https://whaeon.github.io/tags/openwrt/</link>
+        <pubDate>Wed, 15 Jun 2022 16:03:09 +0800</pubDate>
+        
+        <guid>https://whaeon.github.io/tags/openwrt/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>nginx</title>
+        <link>https://whaeon.github.io/tags/nginx/</link>
+        <pubDate>Wed, 15 Jun 2022 15:50:34 +0800</pubDate>
+        
+        <guid>https://whaeon.github.io/tags/nginx/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>kali</title>
+        <link>https://whaeon.github.io/tags/kali/</link>
+        <pubDate>Wed, 15 Jun 2022 15:09:09 +0800</pubDate>
+        
+        <guid>https://whaeon.github.io/tags/kali/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>cutefish</title>
+        <link>https://whaeon.github.io/tags/cutefish/</link>
+        <pubDate>Wed, 15 Jun 2022 15:01:50 +0800</pubDate>
+        
+        <guid>https://whaeon.github.io/tags/cutefish/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>vim</title>
+        <link>https://whaeon.github.io/tags/vim/</link>
+        <pubDate>Wed, 15 Jun 2022 13:41:18 +0800</pubDate>
+        
+        <guid>https://whaeon.github.io/tags/vim/</guid>
+        <description></description>
+        </item>
+        
+    </channel>
+</rss>
