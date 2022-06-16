@@ -3,7 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://whaeon.github.io/</loc>
-    <lastmod>2022-06-15T17:00:06+08:00</lastmod>
+    <lastmod>2022-06-16T10:27:20+08:00</lastmod>
+  </url><url>
+    <loc>https://whaeon.github.io/categories/algorithm/</loc>
+    <lastmod>2022-06-16T10:27:20+08:00</lastmod>
+  </url><url>
+    <loc>https://whaeon.github.io/categories/</loc>
+    <lastmod>2022-06-16T10:27:20+08:00</lastmod>
+  </url><url>
+    <loc>https://whaeon.github.io/categories/data-structure/</loc>
+    <lastmod>2022-06-16T10:27:20+08:00</lastmod>
+  </url><url>
+    <loc>https://whaeon.github.io/post/</loc>
+    <lastmod>2022-06-16T10:27:20+08:00</lastmod>
+  </url><url>
+    <loc>https://whaeon.github.io/p/study-blog01/</loc>
+    <lastmod>2022-06-16T10:27:20+08:00</lastmod>
   </url><url>
     <loc>https://whaeon.github.io/tags/cert/</loc>
     <lastmod>2022-06-15T17:00:06+08:00</lastmod>
@@ -12,9 +27,6 @@
     <lastmod>2022-06-15T17:00:06+08:00</lastmod>
   </url><url>
     <loc>https://whaeon.github.io/tags/kubernetes/</loc>
-    <lastmod>2022-06-15T17:00:06+08:00</lastmod>
-  </url><url>
-    <loc>https://whaeon.github.io/post/</loc>
     <lastmod>2022-06-15T17:00:06+08:00</lastmod>
   </url><url>
     <loc>https://whaeon.github.io/tags/</loc>
@@ -88,9 +100,6 @@
   </url><url>
     <loc>https://whaeon.github.io/p/kubernetes-blog03/</loc>
     <lastmod>2022-06-15T15:44:23+08:00</lastmod>
-  </url><url>
-    <loc>https://whaeon.github.io/categories/</loc>
-    <lastmod>2022-06-15T15:40:36+08:00</lastmod>
   </url><url>
     <loc>https://whaeon.github.io/categories/linux/</loc>
     <lastmod>2022-06-15T15:40:36+08:00</lastmod>
