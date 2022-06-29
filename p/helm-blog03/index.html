@@ -3,21 +3,21 @@
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='error 复现 当我在 k3s 集群的 master 节点执行 helm 命令安装 vault 时，报错产生。 具体信息为：Error: Kubernetes cluster unreachable: Get &amp;quot;http://localhost:8080/version?timeout=32s&amp;quot;: dial tcp 127.0.0.1:8080: connect: connection refused
 TroubleShooting 在经过面向 google 查找之后，找到了一篇博文，介绍了该问题的解决方法。 helm 3 中取消了 tiller 的使用，通过直接与 apiserver 进行通信来完成交互。而 helm 默认读取的配置文件路径 在 .kube/config，而 k3s 的 config 文件存放路径则是 /etc/rancher/k3s/k3s.yaml
-解决方案  直接使用 export 声明 kubeconfig 文件路径，或是 helm 执行命令时加入 kubeconfig 路径 在配置文件 /etc/profile 中声明 kubeconfig 文件的路径，一劳永逸的解决。  1 2 3 4 5 6 7 8 9  # 方案一 export KUBECONFIG=/etc/rancher/k3s/k3s.'><title>k3s 集群使用 helm 安装 vault 时出现 Error</title>
+解决方案 直接使用 export 声明 kubeconfig 文件路径，或是 helm 执行命令时加入 kubeconfig 路径 在配置文件 /etc/profile 中声明 kubeconfig 文件的路径，一劳永逸的解决。 1 2 3 4 5 6 7 8 9 # 方案一 export KUBECONFIG=/etc/rancher/k3s/k3s.'><title>k3s 集群使用 helm 安装 vault 时出现 Error</title>
 
 <link rel='canonical' href='https://whaeon.github.io/p/helm-blog03/'>
 
 <link rel="stylesheet" href="/scss/style.min.ac77dcf8b111b51da39a92990f431923f210f3876d85798a2125667f96dc33a4.css"><meta property='og:title' content='k3s 集群使用 helm 安装 vault 时出现 Error'>
 <meta property='og:description' content='error 复现 当我在 k3s 集群的 master 节点执行 helm 命令安装 vault 时，报错产生。 具体信息为：Error: Kubernetes cluster unreachable: Get &amp;quot;http://localhost:8080/version?timeout=32s&amp;quot;: dial tcp 127.0.0.1:8080: connect: connection refused
 TroubleShooting 在经过面向 google 查找之后，找到了一篇博文，介绍了该问题的解决方法。 helm 3 中取消了 tiller 的使用，通过直接与 apiserver 进行通信来完成交互。而 helm 默认读取的配置文件路径 在 .kube/config，而 k3s 的 config 文件存放路径则是 /etc/rancher/k3s/k3s.yaml
-解决方案  直接使用 export 声明 kubeconfig 文件路径，或是 helm 执行命令时加入 kubeconfig 路径 在配置文件 /etc/profile 中声明 kubeconfig 文件的路径，一劳永逸的解决。  1 2 3 4 5 6 7 8 9  # 方案一 export KUBECONFIG=/etc/rancher/k3s/k3s.'>
+解决方案 直接使用 export 声明 kubeconfig 文件路径，或是 helm 执行命令时加入 kubeconfig 路径 在配置文件 /etc/profile 中声明 kubeconfig 文件的路径，一劳永逸的解决。 1 2 3 4 5 6 7 8 9 # 方案一 export KUBECONFIG=/etc/rancher/k3s/k3s.'>
 <meta property='og:url' content='https://whaeon.github.io/p/helm-blog03/'>
 <meta property='og:site_name' content='Whaeon&#39;s Blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='helm' /><meta property='article:tag' content='k3s' /><meta property='article:tag' content='troubleshooting' /><meta property='article:published_time' content='2022-06-15T16:14:11&#43;08:00'/><meta property='article:modified_time' content='2022-06-15T16:14:11&#43;08:00'/>
 <meta name="twitter:title" content="k3s 集群使用 helm 安装 vault 时出现 Error">
 <meta name="twitter:description" content="error 复现 当我在 k3s 集群的 master 节点执行 helm 命令安装 vault 时，报错产生。 具体信息为：Error: Kubernetes cluster unreachable: Get &amp;quot;http://localhost:8080/version?timeout=32s&amp;quot;: dial tcp 127.0.0.1:8080: connect: connection refused
 TroubleShooting 在经过面向 google 查找之后，找到了一篇博文，介绍了该问题的解决方法。 helm 3 中取消了 tiller 的使用，通过直接与 apiserver 进行通信来完成交互。而 helm 默认读取的配置文件路径 在 .kube/config，而 k3s 的 config 文件存放路径则是 /etc/rancher/k3s/k3s.yaml
-解决方案  直接使用 export 声明 kubeconfig 文件路径，或是 helm 执行命令时加入 kubeconfig 路径 在配置文件 /etc/profile 中声明 kubeconfig 文件的路径，一劳永逸的解决。  1 2 3 4 5 6 7 8 9  # 方案一 export KUBECONFIG=/etc/rancher/k3s/k3s.">
+解决方案 直接使用 export 声明 kubeconfig 文件路径，或是 helm 执行命令时加入 kubeconfig 路径 在配置文件 /etc/profile 中声明 kubeconfig 文件的路径，一劳永逸的解决。 1 2 3 4 5 6 7 8 9 # 方案一 export KUBECONFIG=/etc/rancher/k3s/k3s.">
     </head>
     <body class="
     article-page

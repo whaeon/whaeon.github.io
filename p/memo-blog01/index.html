@@ -5,7 +5,7 @@
 故障分析 网上相关联的资料后，发现是由于 wine 缺少字体导致的。cutefish 中微信安装完成后，字体的默认位置在：~/.cutefish-wine/wechat/drive_c/windows/Fonts
 解决办法 处理方式很简单，下载 微软雅黑 字体，并将字体放到上面的目录下，重启微信即可
 终端管理 cutefish OS 默认安装的终端不能使用鼠标中键进行粘贴，这对于习惯使用中键的我来说简直是折磨，于是我很干脆的换成了 yakuake 终端，下拉式终端，使用体验简直绝了。 下一步就是安装 zsh，然后进行美化了，使用了常见的 oh-my-zsh 进行配置，然后又加入了 zsh-autosuggestions 插件。启动插件的方式还是要记录一下：
- 打开 .zshrc 配置文件，其路径默认是：~/.zshrc 找到 plugins 所在，然后加入 zsh-autosuggestions 插件，配置完成后大概长下面这样  1 2 3  ... plugins=(git zsh-autosuggestions) ...    重新加载配置文件即可（source ~/.zshrc）。  安装部分第三方软件包图标不显示  custfish 桌面图标集成到了 /usr/share/icons/hicolor 目录内，在此目录内的 icon 文件，均可以在配置 Desktop 配置文件内的 Icon 属性时忽略路径以及后缀名。 dock 的配置文件路径在 ~/.config/cutefishos/dock_pinned.conf  解决步骤  拷贝第三方应用程序的 .'><title>cutefish OS 使用小技巧</title>
+打开 .zshrc 配置文件，其路径默认是：~/.zshrc 找到 plugins 所在，然后加入 zsh-autosuggestions 插件，配置完成后大概长下面这样 1 2 3 ... plugins=(git zsh-autosuggestions) ... 重新加载配置文件即可（source ~/.zshrc）。 安装部分第三方软件包图标不显示 custfish 桌面图标集成到了 /usr/share/icons/hicolor 目录内，在此目录内的 icon 文件，均可以在配置 Desktop 配置文件内的 Icon 属性时忽略路径以及后缀名。 dock 的配置文件路径在 ~/.config/cutefishos/dock_pinned.conf 解决步骤 拷贝第三方应用程序的 .desktop 文件到 /usr/share/applications/ 目录下 拷贝第三方应用程序配置文件中 Icon 属性对应路径下的图标文件到 /usr/share/icons/hicolor 对应的目录下 修改 /usr/share/applications/yourapp.'><title>cutefish OS 使用小技巧</title>
 
 <link rel='canonical' href='https://whaeon.github.io/p/memo-blog01/'>
 
@@ -14,7 +14,7 @@
 故障分析 网上相关联的资料后，发现是由于 wine 缺少字体导致的。cutefish 中微信安装完成后，字体的默认位置在：~/.cutefish-wine/wechat/drive_c/windows/Fonts
 解决办法 处理方式很简单，下载 微软雅黑 字体，并将字体放到上面的目录下，重启微信即可
 终端管理 cutefish OS 默认安装的终端不能使用鼠标中键进行粘贴，这对于习惯使用中键的我来说简直是折磨，于是我很干脆的换成了 yakuake 终端，下拉式终端，使用体验简直绝了。 下一步就是安装 zsh，然后进行美化了，使用了常见的 oh-my-zsh 进行配置，然后又加入了 zsh-autosuggestions 插件。启动插件的方式还是要记录一下：
- 打开 .zshrc 配置文件，其路径默认是：~/.zshrc 找到 plugins 所在，然后加入 zsh-autosuggestions 插件，配置完成后大概长下面这样  1 2 3  ... plugins=(git zsh-autosuggestions) ...    重新加载配置文件即可（source ~/.zshrc）。  安装部分第三方软件包图标不显示  custfish 桌面图标集成到了 /usr/share/icons/hicolor 目录内，在此目录内的 icon 文件，均可以在配置 Desktop 配置文件内的 Icon 属性时忽略路径以及后缀名。 dock 的配置文件路径在 ~/.config/cutefishos/dock_pinned.conf  解决步骤  拷贝第三方应用程序的 .'>
+打开 .zshrc 配置文件，其路径默认是：~/.zshrc 找到 plugins 所在，然后加入 zsh-autosuggestions 插件，配置完成后大概长下面这样 1 2 3 ... plugins=(git zsh-autosuggestions) ... 重新加载配置文件即可（source ~/.zshrc）。 安装部分第三方软件包图标不显示 custfish 桌面图标集成到了 /usr/share/icons/hicolor 目录内，在此目录内的 icon 文件，均可以在配置 Desktop 配置文件内的 Icon 属性时忽略路径以及后缀名。 dock 的配置文件路径在 ~/.config/cutefishos/dock_pinned.conf 解决步骤 拷贝第三方应用程序的 .desktop 文件到 /usr/share/applications/ 目录下 拷贝第三方应用程序配置文件中 Icon 属性对应路径下的图标文件到 /usr/share/icons/hicolor 对应的目录下 修改 /usr/share/applications/yourapp.'>
 <meta property='og:url' content='https://whaeon.github.io/p/memo-blog01/'>
 <meta property='og:site_name' content='Whaeon&#39;s Blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='cutefish' /><meta property='article:published_time' content='2022-06-15T15:01:50&#43;08:00'/><meta property='article:modified_time' content='2022-06-15T15:01:50&#43;08:00'/>
@@ -23,7 +23,7 @@
 故障分析 网上相关联的资料后，发现是由于 wine 缺少字体导致的。cutefish 中微信安装完成后，字体的默认位置在：~/.cutefish-wine/wechat/drive_c/windows/Fonts
 解决办法 处理方式很简单，下载 微软雅黑 字体，并将字体放到上面的目录下，重启微信即可
 终端管理 cutefish OS 默认安装的终端不能使用鼠标中键进行粘贴，这对于习惯使用中键的我来说简直是折磨，于是我很干脆的换成了 yakuake 终端，下拉式终端，使用体验简直绝了。 下一步就是安装 zsh，然后进行美化了，使用了常见的 oh-my-zsh 进行配置，然后又加入了 zsh-autosuggestions 插件。启动插件的方式还是要记录一下：
- 打开 .zshrc 配置文件，其路径默认是：~/.zshrc 找到 plugins 所在，然后加入 zsh-autosuggestions 插件，配置完成后大概长下面这样  1 2 3  ... plugins=(git zsh-autosuggestions) ...    重新加载配置文件即可（source ~/.zshrc）。  安装部分第三方软件包图标不显示  custfish 桌面图标集成到了 /usr/share/icons/hicolor 目录内，在此目录内的 icon 文件，均可以在配置 Desktop 配置文件内的 Icon 属性时忽略路径以及后缀名。 dock 的配置文件路径在 ~/.config/cutefishos/dock_pinned.conf  解决步骤  拷贝第三方应用程序的 .">
+打开 .zshrc 配置文件，其路径默认是：~/.zshrc 找到 plugins 所在，然后加入 zsh-autosuggestions 插件，配置完成后大概长下面这样 1 2 3 ... plugins=(git zsh-autosuggestions) ... 重新加载配置文件即可（source ~/.zshrc）。 安装部分第三方软件包图标不显示 custfish 桌面图标集成到了 /usr/share/icons/hicolor 目录内，在此目录内的 icon 文件，均可以在配置 Desktop 配置文件内的 Icon 属性时忽略路径以及后缀名。 dock 的配置文件路径在 ~/.config/cutefishos/dock_pinned.conf 解决步骤 拷贝第三方应用程序的 .desktop 文件到 /usr/share/applications/ 目录下 拷贝第三方应用程序配置文件中 Icon 属性对应路径下的图标文件到 /usr/share/icons/hicolor 对应的目录下 修改 /usr/share/applications/yourapp.">
     </head>
     <body class="
     article-page

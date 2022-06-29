@@ -291,7 +291,10 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description>
+&lt;/div&gt;&lt;h2 id=&#34;双向链表&#34;&gt;双向链表&lt;/h2&gt;
+&lt;p&gt;双向链表是指在链表结点的元素中既有包含下一个结点的指针域，也有包含上一个结点的指针域。&lt;/p&gt;
+&lt;h3 id=&#34;添加结点&#34;&gt;添加结点&lt;/h3&gt;
+</description>
         </item>
         <item>
         <title>数据结构和算法-02</title>

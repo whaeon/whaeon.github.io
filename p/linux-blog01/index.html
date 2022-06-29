@@ -2,22 +2,22 @@
 <html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='简介 使用虚拟机创建的 linux 过程中，经常会遇到由于初始磁盘空间分配较小，后续磁盘可能会被 docker 镜像之类的或者大文件占满。此时，如果想要扩充磁盘空间就可以通过创建新的磁盘分区，然后将该磁盘分区作为 pv 加入到 vg 中。但如果不想要新建一个 pv，可以通过下面的方式进行扩容
-应用  虚拟机关机，扩容磁盘空间，然后使用 fdisk 工具扩容 根磁盘   example
- 1 2 3 4 5 6 7 8 9 10 11 12 13  sudo fdisk /dev/sda &amp;lt;&amp;lt; EOF p d n N p w EOF # 注意上面中的空行，空行是为了跳过 fdisk 的一些输入内容，如果复制使用出错，可以按照 EOF 后的内容一步步操作。    重新调整 pv 的大小  1 2 3 4 5  # 查看当前主机的 pv 状态 sudo pvs # 重新调整已扩充后的磁盘分区在 pv 中的大小 sudo pvresize /dev/sda    直接扩容 lv，然后 resize 一次 lv 的文件系统即可。  1 2 3 4 5 6 7 8 9 10 11  # 可以看到，vg 在 pv 扩容完成后直接就多出来扩容的空间了 sudo vgs # 扩容 lv sudo lvextend -l &#43;100%FREE /dev/ubuntu-vg/ubuntu-lv # 查看 lv 的文件系统类型,基本上都为 ext4 类型 sudo blkid /dev/mapper/ubuntu--vg-ubuntu--lv # resize2fs 扩容 ext4 类型的 lv sudo resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv   '><title>虚拟机磁盘根目录扩容</title>
+应用 虚拟机关机，扩容磁盘空间，然后使用 fdisk 工具扩容 根磁盘 example
+1 2 3 4 5 6 7 8 9 10 11 12 13 sudo fdisk /dev/sda &amp;lt;&amp;lt; EOF p d n N p w EOF # 注意上面中的空行，空行是为了跳过 fdisk 的一些输入内容，如果复制使用出错，可以按照 EOF 后的内容一步步操作。 重新调整 pv 的大小 1 2 3 4 5 # 查看当前主机的 pv 状态 sudo pvs # 重新调整已扩充后的磁盘分区在 pv 中的大小 sudo pvresize /dev/sda 直接扩容 lv，然后 resize 一次 lv 的文件系统即可。 1 2 3 4 5 6 7 8 9 10 11 # 可以看到，vg 在 pv 扩容完成后直接就多出来扩容的空间了 sudo vgs # 扩容 lv sudo lvextend -l &#43;100%FREE /dev/ubuntu-vg/ubuntu-lv # 查看 lv 的文件系统类型,基本上都为 ext4 类型 sudo blkid /dev/mapper/ubuntu--vg-ubuntu--lv # resize2fs 扩容 ext4 类型的 lv sudo resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv '><title>虚拟机磁盘根目录扩容</title>
 
 <link rel='canonical' href='https://whaeon.github.io/p/linux-blog01/'>
 
 <link rel="stylesheet" href="/scss/style.min.ac77dcf8b111b51da39a92990f431923f210f3876d85798a2125667f96dc33a4.css"><meta property='og:title' content='虚拟机磁盘根目录扩容'>
 <meta property='og:description' content='简介 使用虚拟机创建的 linux 过程中，经常会遇到由于初始磁盘空间分配较小，后续磁盘可能会被 docker 镜像之类的或者大文件占满。此时，如果想要扩充磁盘空间就可以通过创建新的磁盘分区，然后将该磁盘分区作为 pv 加入到 vg 中。但如果不想要新建一个 pv，可以通过下面的方式进行扩容
-应用  虚拟机关机，扩容磁盘空间，然后使用 fdisk 工具扩容 根磁盘   example
- 1 2 3 4 5 6 7 8 9 10 11 12 13  sudo fdisk /dev/sda &amp;lt;&amp;lt; EOF p d n N p w EOF # 注意上面中的空行，空行是为了跳过 fdisk 的一些输入内容，如果复制使用出错，可以按照 EOF 后的内容一步步操作。    重新调整 pv 的大小  1 2 3 4 5  # 查看当前主机的 pv 状态 sudo pvs # 重新调整已扩充后的磁盘分区在 pv 中的大小 sudo pvresize /dev/sda    直接扩容 lv，然后 resize 一次 lv 的文件系统即可。  1 2 3 4 5 6 7 8 9 10 11  # 可以看到，vg 在 pv 扩容完成后直接就多出来扩容的空间了 sudo vgs # 扩容 lv sudo lvextend -l &#43;100%FREE /dev/ubuntu-vg/ubuntu-lv # 查看 lv 的文件系统类型,基本上都为 ext4 类型 sudo blkid /dev/mapper/ubuntu--vg-ubuntu--lv # resize2fs 扩容 ext4 类型的 lv sudo resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv   '>
+应用 虚拟机关机，扩容磁盘空间，然后使用 fdisk 工具扩容 根磁盘 example
+1 2 3 4 5 6 7 8 9 10 11 12 13 sudo fdisk /dev/sda &amp;lt;&amp;lt; EOF p d n N p w EOF # 注意上面中的空行，空行是为了跳过 fdisk 的一些输入内容，如果复制使用出错，可以按照 EOF 后的内容一步步操作。 重新调整 pv 的大小 1 2 3 4 5 # 查看当前主机的 pv 状态 sudo pvs # 重新调整已扩充后的磁盘分区在 pv 中的大小 sudo pvresize /dev/sda 直接扩容 lv，然后 resize 一次 lv 的文件系统即可。 1 2 3 4 5 6 7 8 9 10 11 # 可以看到，vg 在 pv 扩容完成后直接就多出来扩容的空间了 sudo vgs # 扩容 lv sudo lvextend -l &#43;100%FREE /dev/ubuntu-vg/ubuntu-lv # 查看 lv 的文件系统类型,基本上都为 ext4 类型 sudo blkid /dev/mapper/ubuntu--vg-ubuntu--lv # resize2fs 扩容 ext4 类型的 lv sudo resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv '>
 <meta property='og:url' content='https://whaeon.github.io/p/linux-blog01/'>
 <meta property='og:site_name' content='Whaeon&#39;s Blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='linux' /><meta property='article:published_time' content='2022-06-15T15:40:36&#43;08:00'/><meta property='article:modified_time' content='2022-06-15T15:40:36&#43;08:00'/>
 <meta name="twitter:title" content="虚拟机磁盘根目录扩容">
 <meta name="twitter:description" content="简介 使用虚拟机创建的 linux 过程中，经常会遇到由于初始磁盘空间分配较小，后续磁盘可能会被 docker 镜像之类的或者大文件占满。此时，如果想要扩充磁盘空间就可以通过创建新的磁盘分区，然后将该磁盘分区作为 pv 加入到 vg 中。但如果不想要新建一个 pv，可以通过下面的方式进行扩容
-应用  虚拟机关机，扩容磁盘空间，然后使用 fdisk 工具扩容 根磁盘   example
- 1 2 3 4 5 6 7 8 9 10 11 12 13  sudo fdisk /dev/sda &amp;lt;&amp;lt; EOF p d n N p w EOF # 注意上面中的空行，空行是为了跳过 fdisk 的一些输入内容，如果复制使用出错，可以按照 EOF 后的内容一步步操作。    重新调整 pv 的大小  1 2 3 4 5  # 查看当前主机的 pv 状态 sudo pvs # 重新调整已扩充后的磁盘分区在 pv 中的大小 sudo pvresize /dev/sda    直接扩容 lv，然后 resize 一次 lv 的文件系统即可。  1 2 3 4 5 6 7 8 9 10 11  # 可以看到，vg 在 pv 扩容完成后直接就多出来扩容的空间了 sudo vgs # 扩容 lv sudo lvextend -l &#43;100%FREE /dev/ubuntu-vg/ubuntu-lv # 查看 lv 的文件系统类型,基本上都为 ext4 类型 sudo blkid /dev/mapper/ubuntu--vg-ubuntu--lv # resize2fs 扩容 ext4 类型的 lv sudo resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv   ">
+应用 虚拟机关机，扩容磁盘空间，然后使用 fdisk 工具扩容 根磁盘 example
+1 2 3 4 5 6 7 8 9 10 11 12 13 sudo fdisk /dev/sda &amp;lt;&amp;lt; EOF p d n N p w EOF # 注意上面中的空行，空行是为了跳过 fdisk 的一些输入内容，如果复制使用出错，可以按照 EOF 后的内容一步步操作。 重新调整 pv 的大小 1 2 3 4 5 # 查看当前主机的 pv 状态 sudo pvs # 重新调整已扩充后的磁盘分区在 pv 中的大小 sudo pvresize /dev/sda 直接扩容 lv，然后 resize 一次 lv 的文件系统即可。 1 2 3 4 5 6 7 8 9 10 11 # 可以看到，vg 在 pv 扩容完成后直接就多出来扩容的空间了 sudo vgs # 扩容 lv sudo lvextend -l &#43;100%FREE /dev/ubuntu-vg/ubuntu-lv # 查看 lv 的文件系统类型,基本上都为 ext4 类型 sudo blkid /dev/mapper/ubuntu--vg-ubuntu--lv # resize2fs 扩容 ext4 类型的 lv sudo resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv ">
     </head>
     <body class="
     article-page

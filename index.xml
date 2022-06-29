@@ -291,7 +291,10 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description>
+&lt;/div&gt;&lt;h2 id=&#34;双向链表&#34;&gt;双向链表&lt;/h2&gt;
+&lt;p&gt;双向链表是指在链表结点的元素中既有包含下一个结点的指针域，也有包含上一个结点的指针域。&lt;/p&gt;
+&lt;h3 id=&#34;添加结点&#34;&gt;添加结点&lt;/h3&gt;
+</description>
         </item>
         <item>
         <title>数据结构和算法-02</title>
@@ -3000,19 +3003,20 @@ metrics server 可以通过官方提供的在线的 yaml 文件的形式直接�
 &lt;li&gt;&lt;code&gt;fullchain.pem&lt;/code&gt; contains your certificate and all cas up to the root ca.&lt;/li&gt;
 &lt;/ol&gt;
 &lt;h2 id=&#34;自动续期&#34;&gt;自动续期&lt;/h2&gt;
-&lt;p&gt;由于 letsencrypt 申请的证书使用期只有3个月，经常人工需续期太累了。&lt;/p&gt;
+&lt;p&gt;由于 letsencrypt 申请的证书使用期只有3个月，经常人工需续期太累了。整了个自动续费的小脚本，参考这里: &lt;a class=&#34;link&#34; href=&#34;https://github.com/whaeon/tools/tree/main/ops/CertbotRenew/TencentCloud&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;here&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;通过 certboot renew 命令进行续期。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;certbot renew --force-renew --manual-auth-hook renewdns.sh
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;certbot renew --force-renew --manual-auth-hook renew.sh
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;code&gt;--force-renew&lt;/code&gt;参数代表强制进行SSL证书续期
 &lt;code&gt;--manual-auth-hook&lt;/code&gt;参数代表自定义验证脚本，这里脚本的内容就是主机名为_acme-challenge的TXT记录。
-至于这里的自定义脚本怎么写，这个就需要看DNS服务商了，每家DNS服务商都不一样的。&lt;/p&gt;
+至于这里的自定义脚本怎么写，这个就需要看DNS服务商了，每家DNS服务商都不一样的。我这里用的是 dnspod 的。&lt;/p&gt;
 </description>
         </item>
         <item>

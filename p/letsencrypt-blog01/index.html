@@ -4,9 +4,9 @@
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='简介 网站的使用少不了域名，而域名在使用过程中少不了 SSL 证书的使用。绝大多数域名机构对于免费的证书都有着一定的限制条件，而付费的证书往往价格高昂，对于中小企业来说无疑是一笔很大的支出。本文主要用来记录如何申请免费的证书以及相关的一些自动化操作。
 Let&amp;rsquo;s Encrypt 免费证书 Let&amp;rsquo;s Encrypt 是一家免费的证书颁发机构，其目的在于推广 https 的使用。
 通过 certbot 申请免费证书 certbot 是 letsencrypt 提供的一个用于命令行的获取证书的客户端，安装方式也已经被集成到各种系统软件仓库之中，可以直接安装。
-1 2 3 4 5 6 7 8  # ubuntu $ sudo apt install -y certbot # CentOS $ sudo yum install -y certbot # MacOS $ sudo brew install certbot   安装完成后，即可通过 certbot 来对域名申请免费的证书。
-申请域名的几种方式  申请域名时需要通过一定的方式来验证域名所有者
-  通过 dns 域名解析的方式来申请证书（推荐）  1 2 3 4 5 6 7 8  # 注意替换下面 email 和 domain 位置为自己申请的域名地址。 # 执行完成后，将输出中的 dns 解析记录添加到对应域名托管商中。 $ sudo certbot --manual --preferred-challenges dns certonly &amp;lt;&amp;lt; EOF email A domain Y EOF    通过在网站根目录下添加文件来进行验证。多数情况下我们可能是为某个内网服务申请证书，而 letsencrypt 的服务器可能没办法访问到该主机，因此，可能会申请失败。  let&amp;rsquo;s encrypt 生成的证书详情  cert.'><title>使用 Let&#39;s Encrypt 申请免费证书</title>
+1 2 3 4 5 6 7 8 # ubuntu $ sudo apt install -y certbot # CentOS $ sudo yum install -y certbot # MacOS $ sudo brew install certbot 安装完成后，即可通过 certbot 来对域名申请免费的证书。
+申请域名的几种方式 申请域名时需要通过一定的方式来验证域名所有者
+通过 dns 域名解析的方式来申请证书（推荐） 1 2 3 4 5 6 7 8 # 注意替换下面 email 和 domain 位置为自己申请的域名地址。 # 执行完成后，将输出中的 dns 解析记录添加到对应域名托管商中。 $ sudo certbot --manual --preferred-challenges dns certonly &amp;lt;&amp;lt; EOF email A domain Y EOF 通过在网站根目录下添加文件来进行验证。多数情况下我们可能是为某个内网服务申请证书，而 letsencrypt 的服务器可能没办法访问到该主机，因此，可能会申请失败。 let&amp;rsquo;s encrypt 生成的证书详情 cert.'><title>使用 Let&#39;s Encrypt 申请免费证书</title>
 
 <link rel='canonical' href='https://whaeon.github.io/p/letsencrypt-blog01/'>
 
@@ -14,9 +14,9 @@ Let&amp;rsquo;s Encrypt 免费证书 Let&amp;rsquo;s Encrypt 是一家免费的�
 <meta property='og:description' content='简介 网站的使用少不了域名，而域名在使用过程中少不了 SSL 证书的使用。绝大多数域名机构对于免费的证书都有着一定的限制条件，而付费的证书往往价格高昂，对于中小企业来说无疑是一笔很大的支出。本文主要用来记录如何申请免费的证书以及相关的一些自动化操作。
 Let&amp;rsquo;s Encrypt 免费证书 Let&amp;rsquo;s Encrypt 是一家免费的证书颁发机构，其目的在于推广 https 的使用。
 通过 certbot 申请免费证书 certbot 是 letsencrypt 提供的一个用于命令行的获取证书的客户端，安装方式也已经被集成到各种系统软件仓库之中，可以直接安装。
-1 2 3 4 5 6 7 8  # ubuntu $ sudo apt install -y certbot # CentOS $ sudo yum install -y certbot # MacOS $ sudo brew install certbot   安装完成后，即可通过 certbot 来对域名申请免费的证书。
-申请域名的几种方式  申请域名时需要通过一定的方式来验证域名所有者
-  通过 dns 域名解析的方式来申请证书（推荐）  1 2 3 4 5 6 7 8  # 注意替换下面 email 和 domain 位置为自己申请的域名地址。 # 执行完成后，将输出中的 dns 解析记录添加到对应域名托管商中。 $ sudo certbot --manual --preferred-challenges dns certonly &amp;lt;&amp;lt; EOF email A domain Y EOF    通过在网站根目录下添加文件来进行验证。多数情况下我们可能是为某个内网服务申请证书，而 letsencrypt 的服务器可能没办法访问到该主机，因此，可能会申请失败。  let&amp;rsquo;s encrypt 生成的证书详情  cert.'>
+1 2 3 4 5 6 7 8 # ubuntu $ sudo apt install -y certbot # CentOS $ sudo yum install -y certbot # MacOS $ sudo brew install certbot 安装完成后，即可通过 certbot 来对域名申请免费的证书。
+申请域名的几种方式 申请域名时需要通过一定的方式来验证域名所有者
+通过 dns 域名解析的方式来申请证书（推荐） 1 2 3 4 5 6 7 8 # 注意替换下面 email 和 domain 位置为自己申请的域名地址。 # 执行完成后，将输出中的 dns 解析记录添加到对应域名托管商中。 $ sudo certbot --manual --preferred-challenges dns certonly &amp;lt;&amp;lt; EOF email A domain Y EOF 通过在网站根目录下添加文件来进行验证。多数情况下我们可能是为某个内网服务申请证书，而 letsencrypt 的服务器可能没办法访问到该主机，因此，可能会申请失败。 let&amp;rsquo;s encrypt 生成的证书详情 cert.'>
 <meta property='og:url' content='https://whaeon.github.io/p/letsencrypt-blog01/'>
 <meta property='og:site_name' content='Whaeon&#39;s Blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='cert' /><meta property='article:published_time' content='2022-06-15T14:51:49&#43;08:00'/><meta property='article:modified_time' content='2022-06-15T14:51:49&#43;08:00'/>
@@ -24,9 +24,9 @@ Let&amp;rsquo;s Encrypt 免费证书 Let&amp;rsquo;s Encrypt 是一家免费的�
 <meta name="twitter:description" content="简介 网站的使用少不了域名，而域名在使用过程中少不了 SSL 证书的使用。绝大多数域名机构对于免费的证书都有着一定的限制条件，而付费的证书往往价格高昂，对于中小企业来说无疑是一笔很大的支出。本文主要用来记录如何申请免费的证书以及相关的一些自动化操作。
 Let&amp;rsquo;s Encrypt 免费证书 Let&amp;rsquo;s Encrypt 是一家免费的证书颁发机构，其目的在于推广 https 的使用。
 通过 certbot 申请免费证书 certbot 是 letsencrypt 提供的一个用于命令行的获取证书的客户端，安装方式也已经被集成到各种系统软件仓库之中，可以直接安装。
-1 2 3 4 5 6 7 8  # ubuntu $ sudo apt install -y certbot # CentOS $ sudo yum install -y certbot # MacOS $ sudo brew install certbot   安装完成后，即可通过 certbot 来对域名申请免费的证书。
-申请域名的几种方式  申请域名时需要通过一定的方式来验证域名所有者
-  通过 dns 域名解析的方式来申请证书（推荐）  1 2 3 4 5 6 7 8  # 注意替换下面 email 和 domain 位置为自己申请的域名地址。 # 执行完成后，将输出中的 dns 解析记录添加到对应域名托管商中。 $ sudo certbot --manual --preferred-challenges dns certonly &amp;lt;&amp;lt; EOF email A domain Y EOF    通过在网站根目录下添加文件来进行验证。多数情况下我们可能是为某个内网服务申请证书，而 letsencrypt 的服务器可能没办法访问到该主机，因此，可能会申请失败。  let&amp;rsquo;s encrypt 生成的证书详情  cert.">
+1 2 3 4 5 6 7 8 # ubuntu $ sudo apt install -y certbot # CentOS $ sudo yum install -y certbot # MacOS $ sudo brew install certbot 安装完成后，即可通过 certbot 来对域名申请免费的证书。
+申请域名的几种方式 申请域名时需要通过一定的方式来验证域名所有者
+通过 dns 域名解析的方式来申请证书（推荐） 1 2 3 4 5 6 7 8 # 注意替换下面 email 和 domain 位置为自己申请的域名地址。 # 执行完成后，将输出中的 dns 解析记录添加到对应域名托管商中。 $ sudo certbot --manual --preferred-challenges dns certonly &amp;lt;&amp;lt; EOF email A domain Y EOF 通过在网站根目录下添加文件来进行验证。多数情况下我们可能是为某个内网服务申请证书，而 letsencrypt 的服务器可能没办法访问到该主机，因此，可能会申请失败。 let&amp;rsquo;s encrypt 生成的证书详情 cert.">
     </head>
     <body class="
     article-page
@@ -384,19 +384,20 @@ Let&amp;rsquo;s Encrypt 免费证书 Let&amp;rsquo;s Encrypt 是一家免费的�
 <li><code>fullchain.pem</code> contains your certificate and all cas up to the root ca.</li>
 </ol>
 <h2 id="自动续期">自动续期</h2>
-<p>由于 letsencrypt 申请的证书使用期只有3个月，经常人工需续期太累了。</p>
+<p>由于 letsencrypt 申请的证书使用期只有3个月，经常人工需续期太累了。整了个自动续费的小脚本，参考这里: <a class="link" href="https://github.com/whaeon/tools/tree/main/ops/CertbotRenew/TencentCloud"  target="_blank" rel="noopener"
+    >here</a></p>
 <p>通过 certboot renew 命令进行续期。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">certbot renew --force-renew --manual-auth-hook renewdns.sh
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">certbot renew --force-renew --manual-auth-hook renew.sh
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><code>--force-renew</code>参数代表强制进行SSL证书续期
 <code>--manual-auth-hook</code>参数代表自定义验证脚本，这里脚本的内容就是主机名为_acme-challenge的TXT记录。
-至于这里的自定义脚本怎么写，这个就需要看DNS服务商了，每家DNS服务商都不一样的。</p>
+至于这里的自定义脚本怎么写，这个就需要看DNS服务商了，每家DNS服务商都不一样的。我这里用的是 dnspod 的。</p>
 
 </section>
 
