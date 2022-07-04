@@ -6,7 +6,47 @@
         <description>Recent content in nginx on Whaeon&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Wed, 15 Jun 2022 15:50:34 +0800</lastBuildDate><atom:link href="https://whaeon.github.io/tags/nginx/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 04 Jul 2022 15:22:35 +0800</lastBuildDate><atom:link href="https://whaeon.github.io/tags/nginx/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>nginx 反向代理上传文件时 104</title>
+        <link>https://whaeon.github.io/p/bug-nginx-blog01/</link>
+        <pubDate>Mon, 04 Jul 2022 15:22:35 +0800</pubDate>
+        
+        <guid>https://whaeon.github.io/p/bug-nginx-blog01/</guid>
+        <description>&lt;h2 id=&#34;场景复现&#34;&gt;场景复现&lt;/h2&gt;
+&lt;p&gt;上传文件时，nginx 日志中总是能看到类似:&lt;code&gt;failed (104: Connection reset by peer) while reading upstream&lt;/code&gt; 的报错输出&lt;/p&gt;
+&lt;h2 id=&#34;故障分析&#34;&gt;故障分析&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;一开始以为是后端程序出了问题，但是经过测试后发现程序正常，上传图片功能可以使用&lt;/li&gt;
+&lt;li&gt;网上搜索之后发现，nginx 默认使用的 http 版本是 1.0 的，而客户端上传图片时，采用的协议版本是 http1.1 的。而下载文件采用的是分块传递，nginx 在从后端程序中下载文件时会出现向上不兼容的情况，也由此会导致 104 错误的产生。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;解决方案&#34;&gt;解决方案&lt;/h2&gt;
+&lt;p&gt;该 bug 主要是由于 http 版本之间的差异导致的，因此，在反向代理时加入支持 http 1.1 版本即可。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# nginx.conf&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;location / &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    ...
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    proxy_http_version 1.1&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    proxy_set_header Connection &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;reference&#34;&gt;Reference&lt;/h2&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/zzhongcy/article/details/89090193&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Nginx: Connection reset by peer 错误定位&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/zjk2752/article/details/21236725&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;errno 104:connetction reset by peer的错误分析&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>k8s 中使用 nginx 作为 ingress controller</title>
         <link>https://whaeon.github.io/p/kubernetes-blog04/</link>
         <pubDate>Wed, 15 Jun 2022 15:50:34 +0800</pubDate>

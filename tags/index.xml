@@ -6,7 +6,23 @@
         <description>Recent content in Tags on Whaeon&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Wed, 15 Jun 2022 17:00:06 +0800</lastBuildDate><atom:link href="https://whaeon.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 04 Jul 2022 15:22:35 +0800</lastBuildDate><atom:link href="https://whaeon.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>bug</title>
+        <link>https://whaeon.github.io/tags/bug/</link>
+        <pubDate>Mon, 04 Jul 2022 15:22:35 +0800</pubDate>
+        
+        <guid>https://whaeon.github.io/tags/bug/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>nginx</title>
+        <link>https://whaeon.github.io/tags/nginx/</link>
+        <pubDate>Mon, 04 Jul 2022 15:22:35 +0800</pubDate>
+        
+        <guid>https://whaeon.github.io/tags/nginx/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>cert</title>
         <link>https://whaeon.github.io/tags/cert/</link>
         <pubDate>Wed, 15 Jun 2022 17:00:06 +0800</pubDate>
@@ -76,14 +92,6 @@
         <pubDate>Wed, 15 Jun 2022 16:03:09 +0800</pubDate>
         
         <guid>https://whaeon.github.io/tags/openwrt/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>nginx</title>
-        <link>https://whaeon.github.io/tags/nginx/</link>
-        <pubDate>Wed, 15 Jun 2022 15:50:34 +0800</pubDate>
-        
-        <guid>https://whaeon.github.io/tags/nginx/</guid>
         <description></description>
         </item>
         <item>

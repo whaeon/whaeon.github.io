@@ -3,7 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://whaeon.github.io/</loc>
-    <lastmod>2022-06-20T11:17:41+08:00</lastmod>
+    <lastmod>2022-07-04T15:22:35+08:00</lastmod>
+  </url><url>
+    <loc>https://whaeon.github.io/tags/bug/</loc>
+    <lastmod>2022-07-04T15:22:35+08:00</lastmod>
+  </url><url>
+    <loc>https://whaeon.github.io/tags/nginx/</loc>
+    <lastmod>2022-07-04T15:22:35+08:00</lastmod>
+  </url><url>
+    <loc>https://whaeon.github.io/p/bug-nginx-blog01/</loc>
+    <lastmod>2022-07-04T15:22:35+08:00</lastmod>
+  </url><url>
+    <loc>https://whaeon.github.io/post/</loc>
+    <lastmod>2022-07-04T15:22:35+08:00</lastmod>
+  </url><url>
+    <loc>https://whaeon.github.io/tags/</loc>
+    <lastmod>2022-07-04T15:22:35+08:00</lastmod>
   </url><url>
     <loc>https://whaeon.github.io/categories/algorithm/</loc>
     <lastmod>2022-06-20T11:17:41+08:00</lastmod>
@@ -12,9 +27,6 @@
     <lastmod>2022-06-20T11:17:41+08:00</lastmod>
   </url><url>
     <loc>https://whaeon.github.io/categories/data-structure/</loc>
-    <lastmod>2022-06-20T11:17:41+08:00</lastmod>
-  </url><url>
-    <loc>https://whaeon.github.io/post/</loc>
     <lastmod>2022-06-20T11:17:41+08:00</lastmod>
   </url><url>
     <loc>https://whaeon.github.io/p/study-blog03/</loc>
@@ -33,9 +45,6 @@
     <lastmod>2022-06-15T17:00:06+08:00</lastmod>
   </url><url>
     <loc>https://whaeon.github.io/tags/kubernetes/</loc>
-    <lastmod>2022-06-15T17:00:06+08:00</lastmod>
-  </url><url>
-    <loc>https://whaeon.github.io/tags/</loc>
     <lastmod>2022-06-15T17:00:06+08:00</lastmod>
   </url><url>
     <loc>https://whaeon.github.io/p/kubernetes-blog09/</loc>
@@ -96,9 +105,6 @@
     <lastmod>2022-06-15T15:52:38+08:00</lastmod>
   </url><url>
     <loc>https://whaeon.github.io/p/kubernetes-blog04/</loc>
-    <lastmod>2022-06-15T15:50:34+08:00</lastmod>
-  </url><url>
-    <loc>https://whaeon.github.io/tags/nginx/</loc>
     <lastmod>2022-06-15T15:50:34+08:00</lastmod>
   </url><url>
     <loc>https://whaeon.github.io/p/memo-blog03/</loc>
