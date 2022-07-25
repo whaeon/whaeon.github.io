@@ -6,7 +6,27 @@
         <description>Recent content in Posts on Whaeon&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Mon, 04 Jul 2022 15:22:35 +0800</lastBuildDate><atom:link href="https://whaeon.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 25 Jul 2022 14:24:13 +0800</lastBuildDate><atom:link href="https://whaeon.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>harbor 上传镜像时，重复多次上传失败</title>
+        <link>https://whaeon.github.io/p/harbor-blog01/</link>
+        <pubDate>Mon, 25 Jul 2022 14:24:13 +0800</pubDate>
+        
+        <guid>https://whaeon.github.io/p/harbor-blog01/</guid>
+        <description>&lt;h2 id=&#34;故障复现&#34;&gt;故障复现&lt;/h2&gt;
+&lt;p&gt;harbor 通过 helm 方式部署到服务器后，上传一个超过 3Gi 大小的镜像时，总是上传镜像完成后进入&lt;code&gt;retry to push&lt;/code&gt;阶段，而且最后的结果也是上传失败。&lt;/p&gt;
+&lt;h3 id=&#34;harbor-环境&#34;&gt;harbor 环境&lt;/h3&gt;
+&lt;p&gt;harbor app version: 2.5.3
+harbor chart version: 1.9.3
+ingress controller: nginx&lt;/p&gt;
+&lt;h2 id=&#34;故障处理&#34;&gt;故障处理&lt;/h2&gt;
+&lt;p&gt;编辑 harbor 的 ingress, 在 annotations 中添加 &lt;code&gt;nginx.ingress.kubernetes.io/proxy-request-buffering: &amp;quot;off&amp;quot;&lt;/code&gt; 即可。&lt;/p&gt;
+&lt;h2 id=&#34;reference&#34;&gt;Reference&lt;/h2&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/goharbor/harbor/issues/9394#issuecomment-541598184&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;docker push large size image failed with retrying(504 Gateway Timeout)
+#9394&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>nginx 反向代理上传文件时 104</title>
         <link>https://whaeon.github.io/p/bug-nginx-blog01/</link>
         <pubDate>Mon, 04 Jul 2022 15:22:35 +0800</pubDate>
