@@ -1789,6 +1789,20 @@ helm 3 中取消了 tiller 的使用，通过直接与 apiserver 进行通信来
         <guid>https://whaeon.github.io/p/network-blog01/</guid>
         <description>&lt;h2 id=&#34;基本概念&#34;&gt;基本概念&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;L2TP&lt;/code&gt; 第二层隧道协议（Layer Two Tunneling Protocol）是一种虚拟隧道协议，通常用于虚拟专用网。L2TP协议自身不提供加密与可靠性验证的功能，可以和安全协议搭配使用，从而实现数据的加密传输。L2TP 用来创建隧道连接，而 ipsec 协议则用来加密数据。因此， L2TP 协议经常会和 ipsec 协议一同出现。&lt;/p&gt;
+&lt;h2 id=&#34;准备环境&#34;&gt;准备环境&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;ubuntu Desktop 版本&lt;/li&gt;
+&lt;li&gt;ubuntu 开启路由转发功能
+&lt;ul&gt;
+&lt;li&gt;编辑 &lt;code&gt;/etc/systl.conf&lt;/code&gt; 文件，取消 &lt;code&gt;ipv4.ip_forward=1&lt;/code&gt; 前的注释，使用 &lt;code&gt;sysctl -p&lt;/code&gt; 重新加载配置文件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;ubuntu 开启 NAT 转发(&lt;em&gt;&lt;strong&gt;非常重要！！！&lt;/strong&gt;&lt;/em&gt;)
+&lt;ul&gt;
+&lt;li&gt;使用 &lt;code&gt;iptables -t nat -A POSTROUTING -j MASQUERADE&lt;/code&gt; 命令，开启 NAT MASQUERADE 功能，便于让同网络的其他主机数据以 NAT 的方式发送。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h2 id=&#34;构建-vpn-server&#34;&gt;构建 vpn server&lt;/h2&gt;
 &lt;p&gt;该文章主要介绍使用 docker 镜像快速搭建 vpn server 服务器，服务器部署参考了:&lt;a class=&#34;link&#34; href=&#34;https://github.com/hwdsl2/docker-ipsec-vpn-server#ipsec-vpn-server-on-docker&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;here&lt;/a&gt;&lt;/p&gt;

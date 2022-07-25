@@ -306,6 +306,20 @@
     
     <h2 id="基本概念">基本概念</h2>
 <p><code>L2TP</code> 第二层隧道协议（Layer Two Tunneling Protocol）是一种虚拟隧道协议，通常用于虚拟专用网。L2TP协议自身不提供加密与可靠性验证的功能，可以和安全协议搭配使用，从而实现数据的加密传输。L2TP 用来创建隧道连接，而 ipsec 协议则用来加密数据。因此， L2TP 协议经常会和 ipsec 协议一同出现。</p>
+<h2 id="准备环境">准备环境</h2>
+<ul>
+<li>ubuntu Desktop 版本</li>
+<li>ubuntu 开启路由转发功能
+<ul>
+<li>编辑 <code>/etc/systl.conf</code> 文件，取消 <code>ipv4.ip_forward=1</code> 前的注释，使用 <code>sysctl -p</code> 重新加载配置文件</li>
+</ul>
+</li>
+<li>ubuntu 开启 NAT 转发(<em><strong>非常重要！！！</strong></em>)
+<ul>
+<li>使用 <code>iptables -t nat -A POSTROUTING -j MASQUERADE</code> 命令，开启 NAT MASQUERADE 功能，便于让同网络的其他主机数据以 NAT 的方式发送。</li>
+</ul>
+</li>
+</ul>
 <h2 id="构建-vpn-server">构建 vpn server</h2>
 <p>该文章主要介绍使用 docker 镜像快速搭建 vpn server 服务器，服务器部署参考了:<a class="link" href="https://github.com/hwdsl2/docker-ipsec-vpn-server#ipsec-vpn-server-on-docker"  target="_blank" rel="noopener"
     >here</a></p>
@@ -763,6 +777,7 @@
             <nav id="TableOfContents">
   <ol>
     <li><a href="#基本概念">基本概念</a></li>
+    <li><a href="#准备环境">准备环境</a></li>
     <li><a href="#构建-vpn-server">构建 vpn server</a></li>
     <li><a href="#客户端操作">客户端操作</a>
       <ol>
