@@ -23,7 +23,10 @@ ingress controller: nginx&lt;/p&gt;
 &lt;h2 id=&#34;reference&#34;&gt;Reference&lt;/h2&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/goharbor/harbor/issues/9394#issuecomment-541598184&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;docker push large size image failed with retrying(504 Gateway Timeout)
-#9394&lt;/a&gt;&lt;/p&gt;
+#9394&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://github.com/goharbor/harbor/issues/9217#issuecomment-534477580&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Size handler fail to get Range from response when to update a layer with size larger than 10GB
+#9217&lt;/a&gt;&lt;/p&gt;
 </description>
         </item>
         <item>
