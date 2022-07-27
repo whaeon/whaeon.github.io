@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='SAN'><title>通过 openssl 创建 SAN</title>
+
+<link rel='canonical' href='https://whaeon.github.io/p/study-blog04/'>
+
+<link rel="stylesheet" href="/scss/style.min.ac77dcf8b111b51da39a92990f431923f210f3876d85798a2125667f96dc33a4.css"><meta property='og:title' content='通过 openssl 创建 SAN'>
+<meta property='og:description' content='SAN'>
+<meta property='og:url' content='https://whaeon.github.io/p/study-blog04/'>
+<meta property='og:site_name' content='Whaeon&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2022-07-27T14:23:46&#43;08:00'/><meta property='article:modified_time' content='2022-07-27T14:23:46&#43;08:00'/>
+<meta name="twitter:title" content="通过 openssl 创建 SAN">
+<meta name="twitter:description" content="SAN">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu2a55d0dc9561dbecaba0e01d6e049248_120948_300x0_resize_q75_box.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Whaeon&#39;s Blog</a></h1>
+            <h2 class="site-description">亿万泥污人,亿万场冷暖.</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/whaeon'
+                        target="_blank"
+                        title="GitHub"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/study-blog04/">通过 openssl 创建 SAN</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            SAN
+        </h3>
+        
+    </div>
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 27, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    2 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="san-简介">SAN 简介</h2>
+<p>SAN(Subject Alternative Name) 是 SSL 标准 x509 中定义的一个扩展。使用了 SAN 字段的 SSL 证书，可以扩展此证书支持的域名，使得一个证书可以支持多个不同域名的解析。</p>
+<h2 id="使用-openssl-生成带有-san-字段的证书">使用 openssl 生成带有 SAN 字段的证书</h2>
+<p>生成证书的方式有两种
+第一种是通过配置文件的方式加载为证书加载配置（较为推荐），便于维护。
+第二种是直接通过命令的方式进行创建，也是现在网上流传的很广的一种方式。
+两种方式其实很相似，区别就在于有无对应证书的配置文件</p>
+<h3 id="方式一">方式一</h3>
+<h4 id="生成自签名证书认证文件">生成自签名证书认证文件</h4>
+<p>通过证书授权文件对证书签发请求进行签名，自签名的方式需要有一个自己的私钥文件来进行签发。因此，需要通过以下命令来生成相应文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">openssl req -new -newkey rsa:2048 -days <span class="o">[</span>validity<span class="o">]</span> -extensions v3_ca -subj <span class="s2">&#34;[key_details]&#34;</span> -nodes -x509 -sha256 -set_serial <span class="m">0</span> -keyout <span class="o">[</span>root_key<span class="o">]</span>.key -out <span class="o">[</span>root_cer<span class="o">]</span>.cer
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>[validity]: 证书有效时间，单位为 天。
+[key_details]: 正确的格式应该为：/C=[CO]/ST=[ST]/L=<a class="link" href="%e5%9f%8e%e5%b8%82%e5%90%8d%e7%a7%b0" >city</a>/O=[org]/OU=[unit]/CN=[display_name]/
+[root_key]: 根证书的私钥名称
+[root_cer]: 根证书的证书名称</p>
+<h4 id="为-san-创建对应的配置文件">为 SAN 创建对应的配置文件</h4>
+<p>创建一个后缀为 <code>.cnf</code> 的配置文件用于保存相关 SAN 的配置，域名较多时，可以创建多个便于后期维护时见名知义。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># openssl-san.cnf </span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> req <span class="o">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">default_bits</span>           <span class="o">=</span> <span class="m">2048</span>
+</span></span><span class="line"><span class="cl"><span class="nv">distinguished_name</span>     <span class="o">=</span> req_distinguished_name
+</span></span><span class="line"><span class="cl"><span class="nv">req_extensions</span>         <span class="o">=</span> req_ext
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span> req_distinguished_name <span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">countryName</span>            <span class="o">=</span> Country Name <span class="o">(</span><span class="m">2</span> letter code<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="nv">stateOrProvinceName</span>    <span class="o">=</span> State or Province Name <span class="o">(</span>full name<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="nv">localityName</span>           <span class="o">=</span> Locality Name <span class="o">(</span>eg, city<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="nv">organizationName</span>       <span class="o">=</span> Organization Name <span class="o">(</span>eg, company<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="nv">commonName</span>             <span class="o">=</span> Common Name <span class="o">(</span>e.g. server FQDN or YOUR name<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Optionally, specify some defaults.</span>
+</span></span><span class="line"><span class="cl"><span class="nv">countryName_default</span>           <span class="o">=</span> <span class="o">[</span>Country<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">stateOrProvinceName_default</span>   <span class="o">=</span> <span class="o">[</span>State<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">localityName_default</span>           <span class="o">=</span> <span class="o">[</span>City<span class="o">]</span>
+</span></span><span class="line"><span class="cl">0.organizationName_default     <span class="o">=</span> <span class="o">[</span>Organization<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">organizationalUnitName_default</span> <span class="o">=</span> <span class="o">[</span>Organization unit<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">emailAddress_default</span>           <span class="o">=</span> <span class="o">[</span>Email<span class="o">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span> req_ext <span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">subjectAltName</span> <span class="o">=</span> @alt_names
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>alt_names<span class="o">]</span>
+</span></span><span class="line"><span class="cl">DNS.1   <span class="o">=</span> <span class="o">[</span>DNS1<span class="o">]</span>
+</span></span><span class="line"><span class="cl">DNS.2   <span class="o">=</span> <span class="o">[</span>DNS2<span class="o">]</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>[DNS1] or [DNS2] (or more if needed): SAN 名称，一行对应一个，域名增加，相应编号也增加即可</p>
+<h4 id="使用-san-配置文件生成相应签名请求">使用 SAN 配置文件生成相应签名请求</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">openssl req -newkey rsa:2048 -subj <span class="s2">&#34;/C=CN/ST=JS/L=NJ/O=trantect/OU=trantect/CN=grpc.trantect.com&#34;</span> -nodes -sha256 -keyout server.key -out server.csr -reqexts req_ext -config trantect-san.cnf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>[csr]: certificate signing request 证书签名请求文件
+[reqexts]: 指定请求扩展
+[config]: 指定 SAN 请求配置文件</p>
+<h4 id="使用-certifying-authorityca-进行签名">使用 (Certifying Authority)CA 进行签名</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">openssl x509 -req -sha256 -CAcreateserial -in server.csr -days <span class="m">3650</span> -CA ca.crt -CAkey ca.key -out server.crt -extensions req_ext -extfile trantect-san.cnf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>命令中的 <code>extensions</code> 以及 <code>extfile</code> 代表指定请求扩展和对应的配置文件路径。</p>
+<h3 id="方式二">方式二</h3>
+<p>较为普遍，网上很容易就能找到，但是不便于维护。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 生成.key  私钥文件</span>
+</span></span><span class="line"><span class="cl">openssl genrsa -out ca.key <span class="m">2048</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 生成.csr 证书签名请求文件</span>
+</span></span><span class="line"><span class="cl">openssl req -new -key ca.key -out ca.csr  -subj <span class="s2">&#34;/C=GB/L=China/O=lixd/CN=grpc.trantect.com&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 自签名生成.crt 证书文件</span>
+</span></span><span class="line"><span class="cl">openssl req -new -x509 -days <span class="m">3650</span> -key ca.key -out ca.crt  -subj <span class="s2">&#34;/C=GB/L=China/O=lixd/CN=grpc.trantect.com&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 生成.key  私钥文件</span>
+</span></span><span class="line"><span class="cl">openssl genrsa -out server.key <span class="m">2048</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 生成.csr 证书签名请求文件</span>
+</span></span><span class="line"><span class="cl">openssl req -new -key server.key -out server.csr <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>	-subj <span class="s2">&#34;/C=GB/L=China/O=lixd/CN=grpc.trantect.com&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>	-reqexts SAN <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>	-config &lt;<span class="o">(</span>cat /etc/ssl/openssl.cnf &lt;<span class="o">(</span><span class="nb">printf</span> <span class="s2">&#34;\n[SAN]\nsubjectAltName=DNS:*.trantect.com&#34;</span><span class="o">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 签名生成.crt 证书文件</span>
+</span></span><span class="line"><span class="cl">openssl x509 -req -days <span class="m">3650</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>   -in server.csr -out server.crt <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>   -CA ca.crt -CAkey ca.key -CAcreateserial <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>   -extensions SAN <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>   -extfile &lt;<span class="o">(</span>cat /etc/ssl/openssl.cnf &lt;<span class="o">(</span><span class="nb">printf</span> <span class="s2">&#34;\n[SAN]\nsubjectAltName=DNS:*.trantect.com&#34;</span><span class="o">))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="reference">Reference</h2>
+<p><a class="link" href="https://help.bizagi.com/bpm-suite/en/index.html?subjectaltname_support.htm"  target="_blank" rel="noopener"
+    >How to create a certificate using OpenSSL with Subject Alternative Name field (SAN)</a></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet'/>
+<div id="waline" class="waline-container"></div>
+<style>
+    .waline-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+        --waline-font-size: var(--article-font-size);
+    }
+    .waline-container .wl-count {
+        color: var(--card-text-color-main);
+    }
+</style><script>
+    
+    Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo","https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/bilibili","https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/qq"],"locale":{"admin":"Admin","placeholder":null},"requiredMeta":["name","email","url"],"serverURL":"https://waline-whaeon.vercel.app/"});
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 Whaeon&#39;s Blog
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.12.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#san-简介">SAN 简介</a></li>
+    <li><a href="#使用-openssl-生成带有-san-字段的证书">使用 openssl 生成带有 SAN 字段的证书</a>
+      <ol>
+        <li><a href="#方式一">方式一</a>
+          <ol>
+            <li><a href="#生成自签名证书认证文件">生成自签名证书认证文件</a></li>
+            <li><a href="#为-san-创建对应的配置文件">为 SAN 创建对应的配置文件</a></li>
+            <li><a href="#使用-san-配置文件生成相应签名请求">使用 SAN 配置文件生成相应签名请求</a></li>
+            <li><a href="#使用-certifying-authorityca-进行签名">使用 (Certifying Authority)CA 进行签名</a></li>
+          </ol>
+        </li>
+        <li><a href="#方式二">方式二</a></li>
+      </ol>
+    </li>
+    <li><a href="#reference">Reference</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
